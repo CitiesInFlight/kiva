@@ -59,7 +59,7 @@
    * Build a simple html option fragment for inclusion inside a select menu. For more control over
    * the list (e.g. styles, etc.), you can roll your own by calling getFundedLoans().
    *
-   * @param $defautId loan id to initially display in the dropdown
+   * @param string $defautId loan id to initially display in the dropdown
    * @return string the HTML options for a select element
    * @see getFundedLoans()
    */
@@ -176,7 +176,7 @@
           $lender_id = $lender['lender_id'];
           
           $sql[] = "INSERT INTO paymentDefaults\n(loan_id, lender_id, default_payment, final_payment, discrepancy) VALUES\n" .
-              "($loan_id, $lender_id, $monthlyRepaymentAmount, $finalPayment, $discrepancy)";
+              "($loan_id, '$lender_id', $monthlyRepaymentAmount, $finalPayment, $discrepancy);";
   
           // now create the monthly payment SQL statements
           

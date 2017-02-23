@@ -31,8 +31,12 @@ CREATE TABLE paymentDefaults (
   default_payment FLOAT NOT NULL DEFAULT 0,
   final_payment FLOAT NOT NULL DEFAULT 0,
   discrepancy FLOAT NOT NULL DEFAULT 0,
-  UNIQUE INDEX pmkeyll (loan_id, lender_id)
+  UNIQUE INDEX pmkeyll (loan_id, lender_id),
+  INDEX (lender_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS payments;
 
 #
 # Repayment details to each lender by month.
@@ -42,7 +46,7 @@ CREATE TABLE payments (
   lender_id VARCHAR(32) NOT NULL,
   month TINYINT UNSIGNED NULL DEFAULT NULL,
   amount FLOAT NULL DEFAULT NULL,
-  UNIQUE INDEX pdkeyllm (loanid, lenderid, month),
-  CONSTRAINT paid_fk_lnid FOREIGN KEY (loan_id) REFERENCES paymentDefaults (loan_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT paid_fk_lrid FOREIGN KEY (lender_id) REFERENCES paymentDefaults (lender_id) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE INDEX pdkeyllm (loan_id, lender_id, month),
+  CONSTRAINT paid_fk_lid FOREIGN KEY (loan_id, lender_id) REFERENCES paymentDefaults (loan_id, lender_id) 
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
